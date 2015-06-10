@@ -1,4 +1,4 @@
-# Testing
-additional stuff for python
-this is just a trial for repositories learning
-it is also intented to contain some folders and scripts in python
+# Mass-Properties-Tool
+This should be intended to create a tool to aid mass properties calculations.
+The current file is written to be executed in www.codeskulptor.com, which is not the best.
+
