@@ -1,0 +1,62 @@
+import math
+#results from first execution 24-03-2015
+#mpta_tara = 254.16 kg
+#sc_weight = 690.03333 kg
+#CoG X axis 103.91884646 mm
+#CoG Y axis -9.33946815448 mm
+#CoG Z axis 4.63917107456 mm
+
+#store tara weight[kg] from adaptors MPTA SN 3893
+mpta_tara_meas = [254.20, 254.15, 254.15]
+mpta_tara = sum(mpta_tara_meas)/len(mpta_tara_meas)
+#print mpta_tara
+                                  
+#store SC weight[kg] with the following addtional items:
+#	tets harness for acc accoustic
+#	solar panel protection covers
+#	mounting spacers with screws
+sc_weight_meas = [690.05, 690.00, 690.05]
+sc_cable_harness = 2.854
+sc_mounting_spacers = 4 * 0.6673
+sc_panel_covers = 36.45 #measurement coming from 05, not from 06
+sc_weight = sum(sc_weight_meas)/len(sc_weight_meas)
+#print sc_weight
+
+#store weight [kg] for first XY configuration
+weight_xy = 690.05
+#store weight [kg] for Z configuration
+weight_z = 690.05
+
+#store test runs and results from tara XY measurements, [kgmm] units
+#additional measurements are taken for the best fit algorithm
+#RT=0 corresponds with X axis measurement
+#RT=270 corresponds with Y axis measurement
+#RT=0 with a different configuration (vertical spacecraft) corresponds with Z axis
+z_tara = [-66645.0,-46790.0, 490.0, 47487.0, 66641.0, 46730.0, -567.0, -47520.0]
+x_tara = z_tara[0]
+y_tara = z_tara[6]
+#store test runs for Z axis tara [kgmm]
+Z_tara = [43.44]
+
+#store test runs from sat XY measurements taken every pi/8 (45) rads
+z_sat = [5065.0, 8536.0, 6955.8, 1326.8, -5107.0, -8570.0, -7014.7, -1380.3]
+#store test runs from Z axis [kgmm]
+Z_sat = [3244.7]
+
+#with RT on pos 0 deg, it will be measured X axis directly
+x_sat = z_sat[0]
+#each position increments 45 deg, so Y axis will be 270 deg or 7th measurement
+#remember indexing of lists in python [0:len-1]
+y_sat = z_sat[6]
+
+#compute moments for all axis axis
+mom_x = x_sat - x_tara
+mom_y = y_sat - y_tara
+mom_z = Z_sat[0] - Z_tara[0]
+#compute CoG for all axis
+CoGx = mom_x / weight_xy
+print "CoG X axis", CoGx, "mm"
+CoGy = mom_y / weight_xy
+print "CoG Y axis", CoGy, "mm"
+CoGz = mom_z / weight_z
+print "CoG Z axis", CoGz, "mm"
