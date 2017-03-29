@@ -1,0 +1,44 @@
+# dario hermida
+# results compilation from test
+import math
+mpo_mass = 1222.16  # mass in kg
+mpo_tara_y = 145.069  # kg.m
+mpo_tara_x = 25.803
+mpo_combined_cog_y = -13.55
+mpo_combined_cog_x = 6.498
+
+# for the MOIs
+m6_spring_factor = 460.27  # kg.m2/s2
+m8_spring_factor = 425.56  # kg.m2/s2
+
+# MOIs on M6
+mpo_combined_moi_z_period = 2.1685  # sec
+mpo_tara_moi_z_period = 0.4832  # sec, empty table period, not tara
+
+# MOIs on M8
+mpo_mpma_combined_moi_z_period = 3.51227
+mpo_mpma_tara_moi_z_period = 3.0554
+mpo_mpma_empty_moi_z_period = 2.77
+
+def cog_calculation (cog_tara, cog_combined, mass):
+    # sin the CoG = (combined - tara)/mass
+    return (cog_combined - cog_tara) / mass
+
+def moi_calculation (spring_factor, moi_tara, moi_combined):
+    # resulting MOI is
+    return (moi_combined**2 - moi_tara**2)*spring_factor
+
+mpo_cog_x = cog_calculation(mpo_tara_x, mpo_combined_cog_x, mpo_mass)
+mpo_cog_y = cog_calculation(mpo_tara_y, mpo_combined_cog_y, mpo_mass)
+print ('this is the CoGx = {:.5} mm'.format(mpo_cog_x * 1000))
+print ('this is the CoGy = {:.5} mm'.format(mpo_cog_y * 1000))
+
+mpo_cog_distance = math.sqrt(mpo_cog_x**2 + mpo_cog_y**2)
+mpo_steiner_term = mpo_cog_distance**2 * mpo_mass
+print ('this is the distance of the center line = {:.5} mm'.format(mpo_cog_distance*1000))
+print ('this is the steiner term MOI = {:.5} kgm'.format(mpo_steiner_term))
+moi_z = moi_calculation(m6_spring_factor, mpo_tara_moi_z_period, mpo_combined_moi_z_period)
+print ('this is the M6 MoIz = {:.7} kgm2'.format(moi_z))
+
+moi_mpma_z = moi_calculation(m8_spring_factor, mpo_mpma_tara_moi_z_period, mpo_mpma_combined_moi_z_period)
+print ('this is the M8 MoIz = {:.7} kgm2'.format(moi_mpma_z))
